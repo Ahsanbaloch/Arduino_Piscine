@@ -1,0 +1,59 @@
+// C++ code
+//
+/*
+  nalogRead(A0
+*/
+
+#include <LiquidCrystal.h>
+  
+LiquidCrystal lcd_1(12, 11, 5, 4, 3, 2);
+
+void setup()
+{
+  pinMode(A0, INPUT);
+  pinMode(9, OUTPUT);
+  Serial.begin(9600);  // Initialize Serial Monitor
+  lcd_1.begin(16, 2); // Set up the number of columns and rows on the LCD.
+}
+/*
+void updateDisplay(float percentage) {
+  //float voltage = Brightness * (5.12 / 1023);
+  float voltage = percentage * 5.12 / 100;
+  //float percentage = (voltage / 5.12) * 100;
+
+  lcd_1.setCursor(0, 0);
+  lcd_1.print("Voltage(V): ");
+  lcd_1.print(voltage, 2); // Print voltage with 2 decimal places
+
+  lcd_1.setCursor(0, 1);
+  lcd_1.print("Bright.(%): ");
+  lcd_1.print(percentage, 2); // Print percentage with 2 decimal places
+  
+  analogWrite(9, map((int)percentage, 0, 100, 0, 255)); // Map brightness to PWM range (0-255)
+}
+
+void loop()
+{
+  if (Serial.available() > 1)
+  {
+     float brightness = Serial.parseInt(); // Read integer value from Serial Monitor
+      if (brightness >= 0 && brightness <= 100)
+        updateDisplay(brightness);
+  }
+} */    
+
+void loop()
+{
+  float value1 = analogRead(A0);
+  float voltage = (value1 * 5.12) / 1023;
+  float percentage = voltage / 5.12 * 100; 
+  analogWrite(9, value1);
+  lcd_1.setCursor(0, 0);
+  lcd_1.print("Voltage(V): ");
+  lcd_1.print(voltage);
+   lcd_1.setCursor(0, 1);
+  lcd_1.print("Bright.(%):");
+  lcd_1.print(percentage);
+  delay(500); // Delay a little bit to improve simulation performance
+}
+
