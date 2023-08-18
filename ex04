@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <title>Switch Grid</title>
+</head>
+<body>
+
+<div class="mt-4 p-5 bg-info text-white rounded text-center">
+  <h1>Arduino Project</h1> 
+</div>
+
+<div class="container mt-3 text-center">
+  <a href="#demo" class="btn btn-info" data-bs-toggle="collapse">LED Buttons</a>
+  <div id="demo" class="collapse">
+    <br>
+    <div class="row justify-content-center">
+      <div class="col-sm-8">
+        <div class="row" id="switchGrid">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>
+  const switchGridContainer = document.getElementById("switchGrid");
+
+  for (let row = 0; row < 8; row++) {
+    const rowDiv = document.createElement("div");
+    rowDiv.classList.add("row", "mb-2", "justify-content-center"); // Adjusted class here
+
+    for (let col = 0; col < 8; col++) {
+      const colDiv = document.createElement("div");
+      colDiv.classList.add("col-sm-1", "p-3");
+
+      const switchContainer = document.createElement("div");
+      switchContainer.classList.add("form-check", "form-switch");
+
+      const inputSwitch = document.createElement("input");
+      inputSwitch.classList.add("form-check-input");
+      inputSwitch.type = "checkbox";
+      inputSwitch.id = `switch_${row}_${col}`;
+
+      switchContainer.appendChild(inputSwitch);
+      colDiv.appendChild(switchContainer);
+      rowDiv.appendChild(colDiv);
+    }
+
+    switchGridContainer.appendChild(rowDiv);
+  }
+</script>
+</body>
+</html>
+
