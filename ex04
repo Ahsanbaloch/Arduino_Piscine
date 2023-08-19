@@ -45,6 +45,11 @@
       inputSwitch.type = "checkbox";
       inputSwitch.id = `switch_${row}_${col}`;
 
+      // Add event listener to each switch
+      inputSwitch.addEventListener("change", function() {
+        updateURL(); // Call the function to update the URL
+      });
+
       switchContainer.appendChild(inputSwitch);
       colDiv.appendChild(switchContainer);
       rowDiv.appendChild(colDiv);
@@ -52,7 +57,22 @@
 
     switchGridContainer.appendChild(rowDiv);
   }
+
+  function updateURL() {
+    let url = "http://your-server-address.com/?"; // Change this to your server address
+    for (let row = 0; row < 8; row++) {
+      for (let col = 0; col < 8; col++) {
+        const switchId = `switch_${row}_${col}`;
+        const isChecked = document.getElementById(switchId).checked;
+        url += `${switchId}=${isChecked ? 1 : 0}&`;
+      }
+    }
+    // Remove the trailing '&' from the URL
+    url = url.slice(0, -1);
+    history.pushState({}, "", url);
+  }
 </script>
+
 </body>
 </html>
 
