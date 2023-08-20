@@ -15,7 +15,24 @@
         </div>
         <div class="row mt-4">
           <div class="col-md-4 offset-md-4">
-            <input type="color" id="colorPicker" value="#000000">
+            <select id="colorSelector">
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="blue">Blue</option>
+              <option value="yellow">Yellow</option>
+              <option value="orange">Orange</option>
+              <option value="purple">Purple</option>
+              <option value="pink">Pink</option>
+              <option value="brown">Brown</option>
+              <option value="teal">Teal</option>
+              <option value="cyan">Cyan</option>
+              <option value="magenta">Magenta</option>
+              <option value="lime">Lime</option>
+              <option value="indigo">Indigo</option>
+              <option value="violet">Violet</option>
+              <option value="silver">Silver</option>
+              <!-- Add more color options here -->
+            </select>
           </div>
         </div>
       </div>
@@ -46,23 +63,23 @@
         switchGridContainer.append(rowDiv);
       }
 
-      $("#colorPicker").change(function() {
-        const selectedColor = $(this).val();
-        console.log("Selected Color:", selectedColor);
+      $("#colorSelector").change(function() {
+        const selectedColorName = $(this).val();
+        console.log("Selected Color:", selectedColorName);
       });
 
       $(".form-check-input").change(function() {
         const switchId = $(this).attr("id");
         const isChecked = $(this).prop("checked");
-        const selectedColor = $("#colorPicker").val(); // Get the color picker value
-        sendData(switchId, isChecked, selectedColor);
+        const selectedColorName = $("#colorSelector").val();
+        sendData(switchId, isChecked, selectedColorName);
       });
 
       function sendData(switchId, state, color) {
         $.ajax({
           type: "GET",
           url: "/switch",
-          data: { id: switchId, state: state, color: color }, // Include color in the data
+          data: { id: switchId, state: state, color: color },
           success: function(response) {
             console.log("Data sent successfully");
           }
