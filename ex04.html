@@ -29,10 +29,11 @@
           const switchContainer = $("<div>")
             .addClass("col-md-1 p-3 form-check form-switch");
 
+          const switchId = row * numCols + col; // Calculate unique switch ID
           const inputSwitch = $("<input>")
             .addClass("form-check-input")
             .attr("type", "checkbox")
-            .attr("id", `switch_${row}_${col}`);
+            .attr("id", `${switchId}`); // Set the calculated ID
 
           switchContainer.append(inputSwitch);
           rowDiv.append(switchContainer);
