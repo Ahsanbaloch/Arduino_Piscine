@@ -13,6 +13,11 @@
         <div class="row text-center" id="switchGrid">
           <!-- Switches will be generated here -->
         </div>
+        <div class="row mt-4">
+          <div class="col-md-4 offset-md-4">
+            <input type="color" id="colorPicker" value="#000000">
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -41,17 +46,23 @@
         switchGridContainer.append(rowDiv);
       }
 
+      $("#colorPicker").change(function() {
+        const selectedColor = $(this).val();
+        console.log("Selected Color:", selectedColor);
+      });
+
       $(".form-check-input").change(function() {
         const switchId = $(this).attr("id");
         const isChecked = $(this).prop("checked");
-        sendData(switchId, isChecked);
+        const selectedColor = $("#colorPicker").val(); // Get the color picker value
+        sendData(switchId, isChecked, selectedColor);
       });
 
-      function sendData(switchId, state) {
+      function sendData(switchId, state, color) {
         $.ajax({
           type: "GET",
           url: "/switch",
-          data: { id: switchId, state: state },
+          data: { id: switchId, state: state, color: color }, // Include color in the data
           success: function(response) {
             console.log("Data sent successfully");
           }
