@@ -13,28 +13,6 @@
         <div class="row text-center" id="switchGrid">
           <!-- Switches will be generated here -->
         </div>
-        <div class="row mt-4">
-          <div class="col-md-4 offset-md-4">
-            <select id="colorSelector">
-              <option value="red">Red</option>
-              <option value="green">Green</option>
-              <option value="blue">Blue</option>
-              <option value="yellow">Yellow</option>
-              <option value="orange">Orange</option>
-              <option value="purple">Purple</option>
-              <option value="pink">Pink</option>
-              <option value="brown">Brown</option>
-              <option value="teal">Teal</option>
-              <option value="cyan">Cyan</option>
-              <option value="magenta">Magenta</option>
-              <option value="lime">Lime</option>
-              <option value="indigo">Indigo</option>
-              <option value="violet">Violet</option>
-              <option value="silver">Silver</option>
-              <!-- Add more color options here -->
-            </select>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -63,23 +41,42 @@
         switchGridContainer.append(rowDiv);
       }
 
-      $("#colorSelector").change(function() {
-        const selectedColorName = $(this).val();
-        console.log("Selected Color:", selectedColorName);
+      // Add an extra switch at the bottom
+      const extraSwitchContainer = $("<div>")
+        .addClass("col-md-1 offset-md-4 p-3 form-check form-switch");
+
+      const extraInputSwitch = $("<input>")
+        .addClass("form-check-input")
+        .attr("type", "checkbox")
+        .attr("id", "extraSwitch"); // Set the ID for the extra switch
+
+      extraSwitchContainer.append(extraInputSwitch);
+      switchGridContainer.append(extraSwitchContainer);
+
+      // Add change event handler for the extra switch
+      $("#extraSwitch").change(function() {
+        const isChecked = $(this).prop("checked");
+        sendData("extraSwitch", isChecked);
       });
 
       $(".form-check-input").change(function() {
         const switchId = $(this).attr("id");
         const isChecked = $(this).prop("checked");
-        const selectedColorName = $("#colorSelector").val();
-        sendData(switchId, isChecked, selectedColorName);
+        sendData(switchId, isChecked);
       });
 
-      function sendData(switchId, state, color) {
+      function sendData(switchId, state) {
+        let patternState = ""; // Default pattern state value
+  
+        if (switchId === "extraSwitch") {
+          // Check if it's the last switch and set the pattern state
+          patternState = state ? "on" : "off";
+        }
+
         $.ajax({
           type: "GET",
           url: "/switch",
-          data: { id: switchId, state: state, color: color },
+          data: { id: switchId, state: state, pattern_state: patternState },
           success: function(response) {
             console.log("Data sent successfully");
           }
