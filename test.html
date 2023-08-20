@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Switch Control</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1 class="text-center">Switch Control</h1>
+    <div class="row">
+      <div class="col-md-8 offset-md-4">
+        <div class="row text-center" id="switchGrid">
+          <!-- Switches will be generated here -->
+        </div>
+        <div class="row mt-4">
+          <div class="col-md-4 offset-md-4">
+            <input type="color" id="colorPicker" value="#000000">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    $(document).ready(function() {
+      const switchGridContainer = $("#switchGrid");
+      const numRows = 8;
+      const numCols = 8;
+
+      for (let row = 0; row < numRows; row++) {
+        const rowDiv = $("<div>").addClass("row mb-2 text-center");
+        for (let col = 0; col < numCols; col++) {
+          const switchContainer = $("<div>")
+            .addClass("col-md-1 p-3 form-check form-switch");
+
+          const switchId = row * numCols + col; // Calculate unique switch ID
+          const inputSwitch = $("<input>")
+            .addClass("form-check-input")
+            .attr("type", "checkbox")
+            .attr("id", `${switchId}`); // Set the calculated ID
+
+          switchContainer.append(inputSwitch);
+          rowDiv.append(switchContainer);
+        }
+        switchGridContainer.append(rowDiv);
+      }
+
+      $("#colorPicker").change(function() {
+        const selectedColor = $(this).val();
+        console.log("Selected Color:", selectedColor);
+      });
+
+      $(".form-check-input").change(function() {
+        const switchId = $(this).attr("id");
+        const isChecked = $(this).prop("checked");
+        const selectedColor = $("#colorPicker").val(); // Get the color picker value
+        sendData(switchId, isChecked, selectedColor);
+      });
+
+      function sendData(switchId, state, color) {
+        $.ajax({
+          type: "GET",
+          url: "/switch",
+          data: { id: switchId, state: state, color: color }, // Include color in the data
+          success: function(response) {
+            console.log("Data sent successfully");
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>
